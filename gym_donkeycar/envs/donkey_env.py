@@ -31,7 +31,7 @@ def supply_defaults(conf):
     for key, val in defaults:
         if key not in conf:
             conf[key] = val
-            print(f"Setting default: {key} {val}")
+            print("Setting default: {} {}".format(key,val))
 
 
 class DonkeyEnv(gym.Env):

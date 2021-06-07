@@ -199,7 +199,7 @@ class DonkeyUnitySimHandler(IMesgHandler):
                 ],
             )
             self.send_cam_config(**cam_config)
-            logger.info(f"done sending cam config. {cam_config}")
+            logger.info("done sending cam config. {}".format(cam_config))
         except:
             logger.info("sending cam config FAILED.")
 
@@ -220,7 +220,7 @@ class DonkeyUnitySimHandler(IMesgHandler):
                 ],
             )
             self.send_lidar_config(**lidar_config)
-            logger.info(f"done sending lidar config., {lidar_config}")
+            logger.info("done sending lidar config., {}".format(lidar_config))
         except:
             logger.info("sending lidar config FAILED.")
         logger.info("done sending car config.")
@@ -243,7 +243,7 @@ class DonkeyUnitySimHandler(IMesgHandler):
         if msg_type in self.fns:
             self.fns[msg_type](message)
         else:
-            logger.warning(f"unknown message type {msg_type}")
+            logger.warning("unknown message type {}".format(msg_type))
 
     # ------- Env interface ---------- #
 
@@ -387,7 +387,7 @@ class DonkeyUnitySimHandler(IMesgHandler):
         self.determine_episode_over()
 
     def on_cross_start(self, data):
-        logger.info(f"crossed start line: lap_time {data['lap_time']}")
+        logger.info("crossed start line: lap_time {}".format(data['lap_time']))
 
     def on_race_start(self, data):
         logger.debug("race started")
@@ -422,10 +422,10 @@ class DonkeyUnitySimHandler(IMesgHandler):
         if math.fabs(self.cte) > 2 * self.max_cte:
             pass
         elif math.fabs(self.cte) > self.max_cte:
-            logger.debug(f"game over: cte {self.cte}")
+            logger.debug("game over: cte {}".format(self.cte))
             self.over = True
         elif self.hit != "none":
-            logger.debug(f"game over: hit {self.hit}")
+            logger.debug("game over: hit {}".format(self.hit))
             self.over = True
         elif self.missed_checkpoint:
             logger.debug("missed checkpoint")
@@ -446,12 +446,12 @@ class DonkeyUnitySimHandler(IMesgHandler):
     def on_recv_scene_names(self, data):
         if data:
             names = data["scene_names"]
-            logger.debug(f"SceneNames: {names}")
+            logger.debug("SceneNames: {}".format(names))
             print("loading scene", self.SceneToLoad)
             if self.SceneToLoad in names:
                 self.send_load_scene(self.SceneToLoad)
             else:
-                raise ValueError(f"Scene name {self.SceneToLoad} not in scene list {names}")
+                raise ValueError("Scene name {} not in scene list {}".format(self.SceneToLoad,names))
 
     def send_control(self, steer, throttle):
         if not self.loaded:
@@ -615,16 +615,16 @@ class DonkeyUnitySimHandler(IMesgHandler):
 
     def blocking_send(self, msg):
         if self.client is None:
-            logger.debug(f"skiping: \n {msg}")
+            logger.debug("skiping: \n {}".format(msg))
             return
 
-        logger.debug(f"blocking send \n {msg}")
+        logger.debug("blocking send \n {}".format(msg))
         self.client.send_now(msg)
 
     def queue_message(self, msg):
         if self.client is None:
-            logger.debug(f"skiping: \n {msg}")
+            logger.debug("skiping: \n {}".format(msg))
             return
 
-        logger.debug(f"sending \n {msg}")
+        logger.debug("sending \n {}".format(msg))
         self.client.queue_message(msg)
